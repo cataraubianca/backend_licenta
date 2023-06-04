@@ -21,6 +21,25 @@ export class PetsService {
     return await this.petsRepository.find();
   }
 
+  async findAllWithDescription(description: string): Promise<Pets[]> {
+    const allPets = await this.petsRepository.find();
+    const filteredPets: Pets[] = [];
+  
+    allPets.forEach((pet) => {
+      if (pet.description.includes(description)) {
+        filteredPets.push(pet);
+      }
+    });
+  
+    return filteredPets;
+  }
+  
+  async getOwnerEmailForPet(petId){
+    const pet = await this.findPetById(petId)
+    const ownerId = pet.userId
+    const owner = await this.userService.findUserById(ownerId)
+    return (await owner).email;
+  }
   async findAllForUserId(userId: number): Promise<Pets[]>{
     const petsData = await this.findAll();
     const filteredPets = petsData.filter(obj =>

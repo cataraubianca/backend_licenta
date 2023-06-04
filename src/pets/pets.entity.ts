@@ -166,7 +166,7 @@ export class Pets {
     @Column({length:128})
     name:string;
 
-    @Column({length:800})
+    @Column({length:350})
     description:string;
 
     @Column({length:128})

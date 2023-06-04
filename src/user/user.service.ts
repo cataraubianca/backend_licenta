@@ -47,6 +47,13 @@ export class UserService {
     }
   }
 
+  async updateName(id: number, text:string) {
+    const pet = this.findUserById(id);
+    (await pet).full_name = text
+    await this.usersRepository.save(await pet);
+    return pet
+  }
+  
   async findOne(id: number): Promise<User> {
     try {
       const user = await this.usersRepository.findOneOrFail({

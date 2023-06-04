@@ -17,4 +17,26 @@ export class SheltersService {
   async create(shelter: Shelters){
     return await this.sheltersRepository.save(shelter);
   }
+
+  async deletePet(id: number) {
+    try {
+      const pet: Shelters = await this.findPetById(id);
+      return this.sheltersRepository.remove(pet);
+    } catch (err) {
+      const error = `Error deleating pet with ${id}`;
+      console.error(error);
+    }
+  }
+
+async findPetById(id: number): Promise<Shelters> {
+  try {
+    const user = await this.sheltersRepository.findOneOrFail({
+      where: { id },
+    });
+
+    return user;
+  } catch (err) {
+    return null;
+  }
+}
 }

@@ -50,6 +50,20 @@ export class PetsController {
     return await this.petsService.findAllForUserId(userId);
   }
 
+  @Get('ownerEmail/:petId')
+  @ApiOkResponse()
+  @ApiNotFoundResponse()
+  async getOwnerEmailForPet(@Param('petId') petId: number){
+    return await this.petsService.getOwnerEmailForPet(petId);
+  }
+
+  @Get('description/:text')
+  @ApiOkResponse()
+  @ApiNotFoundResponse()
+  async findAllWithDescription(@Param('text') text: string){
+    return await this.petsService.findAllWithDescription(text);
+  }
+
   @Get("pet/:id")
   @ApiOkResponse()
   @ApiNotFoundResponse()

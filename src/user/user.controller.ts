@@ -21,6 +21,12 @@ export class UserController {
     const response = await this.userService.findAll()
     return response
   }
+  @Put('changeName/:id/:text')
+  @ApiOkResponse()
+  @ApiNotFoundResponse()
+  updateName(@Param('id') id:number, @Param('text') text: string) {
+    return this.userService.updateName(id,text);
+  }
 
   @Get("user/:id")
   @ApiOkResponse()
