@@ -10,7 +10,7 @@ export class SignupDto {
   @ApiProperty({
     description: 'The email of the new user',
     type: 'string',
-    example: 'abc@estee.com',
+    example: 'abc@yahoo.com',
   })
   email: string;
 

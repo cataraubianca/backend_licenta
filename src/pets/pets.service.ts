@@ -20,6 +20,19 @@ export class PetsService {
   async findAll(): Promise<Pets[]> {
     return await this.petsRepository.find();
   }
+  async findAllRandom(): Promise<Pets[]> {
+    const pets = await this.petsRepository.find();
+    const shuffledPets = pets.sort(() => Math.random() - 0.5);
+    return shuffledPets;
+  }
+  
+  async findAllRandom8(): Promise<Pets[]> {
+    const pets = await this.petsRepository.find();
+    const shuffledPets = pets.sort(() => Math.random() - 0.5);
+    const selectedPets = shuffledPets.slice(0, 8);
+    return selectedPets;
+  }
+  
 
   async findAllWithDescription(description: string): Promise<Pets[]> {
     const allPets = await this.petsRepository.find();

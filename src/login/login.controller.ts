@@ -17,8 +17,8 @@ import {
     ApiTags,
   } from '@nestjs/swagger';
 import { User } from 'src/user/entity/user.entity';
-  
-  import { GetCurrentUser, Public } from './common/decorators';
+import { Public } from 'src/login/common/decorators/public.decorators';
+  import { GetCurrentUser } from './common/decorators';
   import { LoginDto, SignupDto } from './dto';
   import { LoginService } from './login.service';
   import { Tokens } from './types';
@@ -48,9 +48,7 @@ import { User } from 'src/user/entity/user.entity';
     @ApiOkResponse()
     @ApiForbiddenResponse()
     async signinLocal(
-      @Body() formFields: LoginDto,
-      @Res({ passthrough: true }) res,
-    ): Promise<Tokens> {
+      @Body() formFields: LoginDto, @Res({ passthrough: true }) res,): Promise<Tokens> {
       const login = await this.loginService.signinLocal(formFields, res);
       if (login) {
         return login;
@@ -68,3 +66,5 @@ import { User } from 'src/user/entity/user.entity';
       return this.loginService.logout(userId, req, res);
     }
   }
+
+

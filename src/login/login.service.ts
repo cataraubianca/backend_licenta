@@ -69,20 +69,15 @@ import { Roles } from 'src/roles/roles.entity';
           if (check) {
             const tokens = await this.getTokens(user.id, user.email);
             res.cookie('accessCookie', tokens, {
-              expires: new Date(new Date().getTime() + 15 * 60),
               sameSite: 'strict',
               httpOnly: true,
             });
             return tokens;
           } else {
             return null
-            // const loginError = new LoginErrorException();
-            // return loginError;
           }
         } else {
           return null
-          // const loginError = new LoginErrorException();
-          // return loginError;
         }
       } catch (err) {
         const error = `Login error for user: ${dto.email}`;

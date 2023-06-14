@@ -13,6 +13,7 @@ import { MulterModule } from '@nestjs/platform-express';
 import { ServeStaticModule } from '@nestjs/serve-static';
 import { join } from 'path';
 import { LoginModule } from './login/login.module';
+import { RolesGuard } from './login/common/guards/role.guard';
 
 @Module({
   imports: [TypeOrmModule.forRoot({
@@ -42,6 +43,6 @@ import { LoginModule } from './login/login.module';
   }),
   ],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [AppService, RolesGuard],
 })
 export class AppModule {}

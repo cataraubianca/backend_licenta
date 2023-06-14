@@ -8,7 +8,7 @@ export class LoginDto {
   @ApiProperty({
     description: 'The email of the user',
     type: 'string',
-    example: 'abc@estee.com',
+    example: 'abc@yahoo.com',
   })
   email: string;
 

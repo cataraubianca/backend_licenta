@@ -1,6 +1,8 @@
 import { Body, Controller, Delete, Get, Param, Post, Put, Res, Query, HttpException, HttpStatus } from '@nestjs/common';
 import { PetsService } from './pets.service';
 import { Breed, petCategory, Pets, States } from './pets.entity';
+import { Public } from 'src/login/common/decorators/public.decorators';
+
 import{
   ApiBearerAuth,
   ApiForbiddenResponse,
@@ -12,14 +14,35 @@ import{
 
 @Controller('pets')
 @ApiTags('pets')
+@ApiBearerAuth('docs-token')
 export class PetsController {
   constructor(private readonly petsService: PetsService) {}
 
   @Get()
+  @Public()
   @ApiOkResponse()
   @ApiNotFoundResponse()
-  async getAllRoles() {
+  async getAllPets() {
     const response = await this.petsService.findAll()
+    return response
+  }
+
+  
+  @Get('random')
+  @Public()
+  @ApiOkResponse()
+  @ApiNotFoundResponse()
+  async getAllPetsRandom() {
+    const response = await this.petsService.findAllRandom()
+    return response
+  }
+
+  @Get('random8')
+  @Public()
+  @ApiOkResponse()
+  @ApiNotFoundResponse()
+  async getAllPetsRandom8() {
+    const response = await this.petsService.findAllRandom8()
     return response
   }
 
@@ -30,6 +53,7 @@ export class PetsController {
     return await this.petsService.findFavoritesForUser(userId)
   }
   @Get('advanced')
+  @Public()
   @ApiOkResponse()
   @ApiNotFoundResponse()
   async getPets(
@@ -58,6 +82,7 @@ export class PetsController {
   }
 
   @Get('description/:text')
+  @Public()
   @ApiOkResponse()
   @ApiNotFoundResponse()
   async findAllWithDescription(@Param('text') text: string){
@@ -65,6 +90,7 @@ export class PetsController {
   }
 
   @Get("pet/:id")
+  @Public()
   @ApiOkResponse()
   @ApiNotFoundResponse()
   async findOne(@Param('id') id: number) {

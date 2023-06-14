@@ -28,6 +28,15 @@ export class SheltersService {
     }
   }
 
+  async remove(id: number): Promise<void> {
+    try {
+      await this.sheltersRepository.delete(id);
+    } catch (error) {
+      // Handle any errors that occurred during the deletion process
+      throw new Error("Failed to delete user");
+    }
+  }
+  
 async findPetById(id: number): Promise<Shelters> {
   try {
     const user = await this.sheltersRepository.findOneOrFail({

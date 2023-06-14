@@ -9,12 +9,15 @@ import{
   ApiTags,
   ApiParam
 } from '@nestjs/swagger'
+import { Public } from 'src/login/common/decorators/public.decorators';
 @Controller('users')
 @ApiTags('Users')
+@ApiBearerAuth('docs-token')
 export class UserController {
   constructor(private readonly userService: UserService) {}
 
   @Get()
+  @Public()
   @ApiOkResponse()
   @ApiNotFoundResponse()
   async getAllUsers() {
@@ -22,6 +25,7 @@ export class UserController {
     return response
   }
   @Put('changeName/:id/:text')
+  @Public()
   @ApiOkResponse()
   @ApiNotFoundResponse()
   updateName(@Param('id') id:number, @Param('text') text: string) {
@@ -29,6 +33,7 @@ export class UserController {
   }
 
   @Get("user/:id")
+  @Public()
   @ApiOkResponse()
   @ApiNotFoundResponse()
   async findOne(@Param('id') id: number) {
@@ -38,6 +43,7 @@ export class UserController {
   
 
   @Get('user-role/:userId')
+  @Public()
   @ApiTags('Roles')
   @ApiOkResponse()
   @ApiNotFoundResponse()
@@ -48,6 +54,7 @@ export class UserController {
       throw new HttpException('No role found for user!', HttpStatus.NOT_FOUND);
   }
   @Post()
+  @Public()
   @ApiOkResponse()
   @ApiNotFoundResponse()
   async create(@Body() createUserDto: User, @Res() res: Response){
@@ -84,10 +91,10 @@ export class UserController {
   async removeFromFavorites(@Param('userId') userId: number, @Param('petId') petId: number){
     return await this.userService.removeFromFavorites(userId, petId);
   }
-  @Delete("id")
+  @Delete(":id")
   @ApiOkResponse()
   @ApiNotFoundResponse()
-  async delete(@Body() id: number, @Res() res: Response) {
+  async delete(@Param('id') id: number, @Res() res: Response) {
     const response = await this.userService.remove(id);
     return response
   }

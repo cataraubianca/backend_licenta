@@ -1,6 +1,8 @@
 import { Body, Controller, Delete, Get, Param, Post, Put, Res } from '@nestjs/common';
 import { RolesService } from './roles.service';
 import { Roles } from './roles.entity';
+import { Public } from 'src/login/common/decorators/public.decorators';
+
 import{
   ApiBearerAuth,
   ApiForbiddenResponse,
@@ -12,10 +14,12 @@ import{
 
 @Controller('roles')
 @ApiTags('roles')
+@ApiBearerAuth('docs-token')
 export class RolesController {
   constructor(private readonly rolesService: RolesService) {}
 
   @Get()
+  @Public()
   @ApiOkResponse()
   @ApiNotFoundResponse()
   async getAllRoles() {
@@ -24,6 +28,7 @@ export class RolesController {
   }
 
   @Post()
+  @Public()
   @ApiOkResponse()
   @ApiNotFoundResponse()
   async create(@Body() createRoleDto: Roles){

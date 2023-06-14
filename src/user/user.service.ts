@@ -23,8 +23,14 @@ export class UserService {
 
 
   async remove(id: number): Promise<void> {
-    await this.usersRepository.delete(id);
+    try {
+      await this.usersRepository.delete(id);
+    } catch (error) {
+      // Handle any errors that occurred during the deletion process
+      throw new Error("Failed to delete user");
+    }
   }
+  
 
   update(id: number, user: User) {
     this.usersRepository.update(id, user);
@@ -125,12 +131,13 @@ export class UserService {
   
     user.favorites = user.favorites || []; // Ensure petsIds array exists
   
-    user.favorites = user.favorites.filter((id) => id !== petId && id !== null);
+    user.favorites = user.favorites.filter((id) => id !== petId);
   
     await this.usersRepository.save(user);
   
     return user;
   }
+  
   
   async addFavoriteToUser(userId: number, petId: number) {
     const user = await this.findUserById(userId);
@@ -159,7 +166,6 @@ export class UserService {
   ): Promise<User> {
     try {
         const testUser = await this.findUserByEmail(user.email);
-
         if (!testUser) {
           const salt = await bcrypt.genSalt();
           const hash = await bcrypt.hash(user.password, salt);
@@ -171,22 +177,15 @@ export class UserService {
             full_name: user.full_name,
             roleId: 2
           });
-
           const insertedUser = await this.usersRepository.save(newUser);
-
-          //if (full_name) {
-          //  await this.updateUser(insertedUser.id, { full_name });
-          //}
-
           return insertedUser;
         } else {
           throw new HttpException('User already exists.', HttpStatus.CONFLICT);
         }
       
     } catch (err) {
-      //const error = `Error creating new user: ${err.message}`;
-      //this.logger.error(error);
       console.error(err);
     }
   }
 }   
+
