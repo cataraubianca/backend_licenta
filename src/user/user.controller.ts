@@ -1,6 +1,8 @@
 import { Body, Controller, Delete, Get, HttpException, HttpStatus, Param, Post, Put, Res } from '@nestjs/common';
 import { UserService } from './user.service';
 import { User } from './entity/user.entity';
+import { Roles } from 'src/login/common/decorators/roles.decorator';
+import { UserRole } from 'src/roles/roles.entity';
 import{
   ApiBearerAuth,
   ApiForbiddenResponse,
@@ -92,6 +94,7 @@ export class UserController {
     return await this.userService.removeFromFavorites(userId, petId);
   }
   @Delete(":id")
+  @Roles(UserRole.ADMIN)
   @ApiOkResponse()
   @ApiNotFoundResponse()
   async delete(@Param('id') id: number, @Res() res: Response) {

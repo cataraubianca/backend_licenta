@@ -2,6 +2,8 @@ import { Body, Controller, Delete, Get, Param, Post, Put, Res, Query, HttpExcept
 import { PetsService } from './pets.service';
 import { Breed, petCategory, Pets, States } from './pets.entity';
 import { Public } from 'src/login/common/decorators/public.decorators';
+import { Roles } from 'src/login/common/decorators/roles.decorator';
+import { UserRole } from 'src/roles/roles.entity';
 
 import{
   ApiBearerAuth,
@@ -105,7 +107,8 @@ export class PetsController {
     return response
     }
 
-    @Delete(':id')
+  @Delete(':id')
+  @Roles(UserRole.ADMIN)
   @ApiOkResponse()
   @ApiNotFoundResponse()
   deleteTeamById(@Param('id') id: number) {
